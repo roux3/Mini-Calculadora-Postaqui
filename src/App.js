@@ -1,23 +1,24 @@
-import logo from './logo.svg';
 import './App.css';
+
+//Bibliotecas
+import {BrowserRouter as Router, Routes, Route, } from "react-router-dom"
+
+//Componentes
+import Origem from './components/pages/Origem/Origem';
+
+//Arquivos
+import banner from './img/postaqui3.png'
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        <Router>
+          <img src={banner}></img>
+          <h1>Teste Calculadora Postaqui</h1>
+          <Routes>
+              <Route exact path='/' element={<Origem/>}/>
+          </Routes>
+        </Router>
     </div>
   );
 }
