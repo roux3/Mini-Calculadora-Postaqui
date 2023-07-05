@@ -27,5 +27,13 @@ const StyledHeader = styled.div`
         height: 74px;
         flex-shrink: 0;
     }
+    h1{
+        color: var(--title-color);
+        font-size: 36px;
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
 
 `

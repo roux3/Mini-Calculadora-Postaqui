@@ -1,6 +1,7 @@
 :root{
   --back-color: #FFCD40;
   --container-back: #E1E1E1;
+  --title-color: #1E1E1E;
 }
 
 
@@ -9,10 +10,51 @@
   margin: 0;
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
+  
 }
 
 html, body, #root{
   background-color: var(--back-color);
-  height: 100%;
+  /* height: 100%; */
 }
 
+
+.container{
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  min-height: 367px;
+  margin: 70px auto;
+  flex-shrink: 0;
+  border-radius: 20px;
+  background: var(--container-back);
+  text-align: center;
+  padding: 20px 40px;
+}
+
+.container .title-container{
+  margin-bottom: 30px;
+}
+
+.dados_pessoais{
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+
+}
+
+.form_control{
+  margin: 4px 20px;
+  background-color: #fff;
+  width: 200px;
+
+  
+}
+
+.dados_endereco{
+  display: flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:flex-start;
+  
+}
