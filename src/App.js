@@ -11,7 +11,7 @@ import Header from "./components/layout/Header/Header";
 function App() {
 
   const [sender, setSender] = useState([])
-
+  const [senderAddress, setSenderAddress] = useState([])
 
 
   return (
@@ -21,7 +21,7 @@ function App() {
           <Header/>
          
             <Routes>
-                <Route exact path='/' element={<Origem sender={sender} setSender={setSender}/>}/>
+                <Route exact path='/' element={<Origem sender={sender} setSender={setSender} address={senderAddress} setAddress={setSenderAddress}/>}/>
             </Routes>
           
         </Router>
