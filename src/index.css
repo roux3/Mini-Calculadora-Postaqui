@@ -2,7 +2,10 @@
   --back-color: #FFCD40;
   --container-back: #E1E1E1;
   --title-color: #1E1E1E;
+  --button-color: #2D9CDB;
+  --button-color-hover:#1e7ab0;
 }
+
 
 
 *{
@@ -44,11 +47,16 @@ html, body, #root{
 }
 
 .form_control{
-  margin: 4px 20px;
-  background-color: #fff;
-  width: 200px;
+  margin: 4px 20px 10px 20px;
+  width: 200px; 
+}
 
-  
+.inputFields{
+  background-color: black;
+}
+
+.helpersText{
+  text-align: left;
 }
 
 .dados_endereco{
@@ -58,3 +66,6 @@ html, body, #root{
   justify-content:flex-start;
   
 }
+
+
+

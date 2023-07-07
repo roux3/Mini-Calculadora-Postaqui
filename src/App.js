@@ -21,7 +21,7 @@ function App() {
           <Header/>
          
             <Routes>
-                <Route exact path='/' element={<Origem sender={sender} setSender={setSender} address={senderAddress} setAddress={setSenderAddress}/>}/>
+                <Route exact path='/' element={<Origem sender={sender} setSender={setSender}/>}/>
             </Routes>
           
         </Router>
