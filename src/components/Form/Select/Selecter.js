@@ -1,5 +1,4 @@
 //Styled-components
-import styled from "styled-components"
 
 //Bibliotecas
 import { FormControl, MenuItem, InputLabel, Select} from "@mui/material"

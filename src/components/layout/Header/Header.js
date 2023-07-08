@@ -8,7 +8,7 @@ export default function Header(){
     return(
         <StyledHeader>
         <div>
-            <img src={banner}></img>
+            <img src={banner} alt="PostaAqui-logo"></img>
             <h1>Teste Calculadora Postaqui</h1>
         </div>
         </StyledHeader>

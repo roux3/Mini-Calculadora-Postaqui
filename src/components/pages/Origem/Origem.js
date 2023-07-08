@@ -1,5 +1,5 @@
 //Styled-components
-import styled from "styled-components";
+
 
 //Componentes
 import Input from "../../Form/Input/Input";
@@ -19,11 +19,10 @@ export default function Origem({sender,setSender}){
     const navigate = useNavigate()
 
    function API_cep(cep){
-        cep = cep.replace(/\D/d, '')
-        if(cep.length === 8){
+        //cep = cep.replace(/\D/d, '')
+        if(cep.length === 10){
             setErroCep([]);
-   
-            axios.get(`https://viacep.com.br/ws/${cep}/json/`)
+            axios.get(`https://viacep.com.br/ws/${cep.replace(/[.-]/g, '')}/json/`)
             .then((res) => {
                 const data = res.data
                 if(data.cep){
@@ -32,7 +31,7 @@ export default function Origem({sender,setSender}){
                         ...sender,
                         address:{
                             ...sender.address,
-                            "cep": cep.replace(/[.-]/g, ''),
+                            "cep": cep,
                             "state": options.find(item => item.abbreviation === data.uf).name,
                             "uf": data.uf,
                             "city": data.localidade,
@@ -63,7 +62,7 @@ export default function Origem({sender,setSender}){
             ...sender,
             address:{
                 ...sender.address,
-                "cep": cep.replace(/\D/d, ''),
+                "cep": cep,
                 "state": "",
                 "uf": "",
                 "city": "",
@@ -217,7 +216,7 @@ export default function Origem({sender,setSender}){
     const submit = (e) => {
         e.preventDefault()
 
-        if(sender.address.cep.length === 8){
+        if(sender.address.cep.length === 10){
             setErroCep([]);
         }
         else{
@@ -225,7 +224,7 @@ export default function Origem({sender,setSender}){
             
         }
 
-        if(sender.cpf.length == 11){
+        if(sender.cpf.length === 14){
             setErroCpf([]);
            console.log(sender)
             
@@ -234,7 +233,7 @@ export default function Origem({sender,setSender}){
             setErroCpf({cpf:"CPF inválido"})
         }
 
-        if(sender.address.cep.length === 8 && sender.cpf.length == 11){
+        if(sender.address.cep.length === 10 && sender.cpf.length === 14){
             navigate("/destino")
         }
 
@@ -245,8 +244,8 @@ export default function Origem({sender,setSender}){
     function handleChange(e){
         let value = e.target.value
         if(e.target.name === "cpf"){
-            value = value.replace(/[.-]/g, '')
-            if(value.length == 11){
+            //value = value.replace(/[.-]/g, '') //replace pode ser feito no final quando for enviar de fato a requisição
+            if(value.length === 11){
                 setErroCpf([]);
             } //salva em sender sem os pontos e traços
         }
@@ -260,7 +259,7 @@ export default function Origem({sender,setSender}){
             ...sender,
             address:{
                 ...sender.address,
-                [e.target.name] : e.target.value.replace(/[-]/g, '')
+                [e.target.name] : e.target.value
             }
         }))
         if(e.target.name === "cep"){
@@ -288,6 +287,7 @@ export default function Origem({sender,setSender}){
 
     return(
         <div className="container">
+        <div className="containerBox">
             <h3 className="title-container">Dados Origem</h3>
             <form onSubmit={submit} className="form"> 
                 <div className="dados_pessoais">
@@ -297,7 +297,7 @@ export default function Origem({sender,setSender}){
                     <Input type="email" text="E-mail" nome="email" required={true} mask="" max={70} handleOnChange={handleChange} value={sender.email}/>
                 </div>
                 <div className="dados_endereco">
-                    <Input type="text" text="CEP" nome="cep" error={erroCep.cep ? true:false} helper={erroCep.cep && erroCep.cep} required={true} mask="99999-999" max={9} handleOnChange={handleChangeAdrress} value={sender.address && sender.address.cep}/>
+                    <Input type="text" text="CEP" nome="cep" error={erroCep.cep ? true:false} helper={erroCep.cep && erroCep.cep} required={true} mask="99.999-999" max={10} handleOnChange={handleChangeAdrress} value={sender.address && sender.address.cep}/>
                     <Select text="UF" nome="uf" options={options} handleOnChange={handleSelect} value={sender.address ? sender.address.state: ""}/>
                     <Input type="text" text="Cidade" nome="city" mask="" max={50} required={true} handleOnChange={handleChangeAdrress} value={sender.address && sender.address.city}/>
                     <Input type="text" text="Bairro" nome="neighborhood" mask="" max={70} required={true} handleOnChange={handleChangeAdrress} value={sender.address && sender.address.neighborhood}/>
@@ -308,6 +308,7 @@ export default function Origem({sender,setSender}){
                 <SubmitButton text={"Avançar"}/>
                
             </form>
+        </div>
         </div>
         
     )

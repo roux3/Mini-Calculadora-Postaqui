@@ -5,7 +5,7 @@ import {useState} from "react"
 //Componentes
 import Origem from './components/pages/Origem/Origem';
 import Header from "./components/layout/Header/Header";
-
+import Destino from "./components/pages/Destino/Destino";
 
 
 function App() {
@@ -19,10 +19,11 @@ function App() {
         <Router>
 
           <Header/>
+          {/* Ideia: Colocar os steps aqui, e ficar verificando se todos campos foram preenchidos */}
          
             <Routes>
                 <Route exact path='/' element={<Origem sender={sender} setSender={setSender}/>}/>
-                <Route exact path='/destino' element={<Origem receiver={receiver} setReceiver={setReceiver}/>}/>
+                <Route exact path='/destino' element={<Destino sender={sender} receiver={receiver} setReceiver={setReceiver}/>}/>
             </Routes>
           
         </Router>
