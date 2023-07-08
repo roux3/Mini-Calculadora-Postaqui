@@ -8,13 +8,15 @@ import Select from "../../Form/Select/Selecter";
 //Bibliotecas
 import axios from "axios";
 import SubmitButton from "../../Form/SubmitButton/SubmitButton";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import {useNavigate} from "react-router-dom"
 
 export default function Origem({sender,setSender}){
 
     const [erroCep, setErroCep] = useState([])
     const [erroCpf, setErroCpf] = useState([])
 
+    const navigate = useNavigate()
 
    function API_cep(cep){
         cep = cep.replace(/\D/d, '')
@@ -223,7 +225,6 @@ export default function Origem({sender,setSender}){
             
         }
 
-
         if(sender.cpf.length == 11){
             setErroCpf([]);
            console.log(sender)
@@ -231,6 +232,10 @@ export default function Origem({sender,setSender}){
         }
         else{
             setErroCpf({cpf:"CPF inválido"})
+        }
+
+        if(sender.address.cep.length === 8 && sender.cpf.length == 11){
+            navigate("/destino")
         }
 
     
