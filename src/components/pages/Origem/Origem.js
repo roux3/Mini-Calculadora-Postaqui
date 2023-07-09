@@ -8,7 +8,7 @@ import Select from "../../Form/Select/Selecter";
 //Bibliotecas
 import axios from "axios";
 import SubmitButton from "../../Form/SubmitButton/SubmitButton";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import {useNavigate} from "react-router-dom"
 
 export default function Origem({sender,setSender}){
@@ -16,14 +16,52 @@ export default function Origem({sender,setSender}){
     const [erroCep, setErroCep] = useState([])
     const [erroCpf, setErroCpf] = useState([])
 
+    const [validForm, setValidForm] = useState(true)
+    
+
+    useEffect(() => {
+        API_cep(sender?.address?.cep)
+    },[])
+
+    useEffect(() => {
+        console.log(sender)
+        verificaForm();
+
+    },[sender])
+
+
+    function verificaForm(){         
+
+        if((sender.fullname && sender.fullname !== "") 
+        && (sender.cpf && sender.cpf !== "" && sender.cpf.length === 14) 
+        &&  (sender.phone && sender.phone !== "") 
+        && (sender.email && sender.email !== "")
+        &&(sender.address && (sender.address.cep && sender.address.cep !== "")
+        && (sender.address.state && sender.address.state !== "")
+        && (sender.address.uf && sender.address.uf !== "")
+        && (sender.address.city && sender.address.city !== "")
+        && (sender.address.neighborhood && sender.address.neighborhood !== "")
+        && (sender.address.street && sender.address.street !== "")
+        && (sender.address.number && sender.address.number !== ""))
+         && validForm === false){
+            
+            return false
+        }
+        else{
+            console.log("negativo")
+            return true
+        }
+    }
+
     const navigate = useNavigate()
 
    function API_cep(cep){
         //cep = cep.replace(/\D/d, '')
-        if(cep.length === 10){
+        if(cep && cep.length === 10){
             setErroCep([]);
             axios.get(`https://viacep.com.br/ws/${cep.replace(/[.-]/g, '')}/json/`)
             .then((res) => {
+                setValidForm(false)
                 const data = res.data
                 if(data.cep){
                     //Atualizo os campos automaticamente caso o cep seja válido e tenha um retorno diferente de undefined
@@ -42,6 +80,10 @@ export default function Origem({sender,setSender}){
 
                    
                 }
+                else{
+                    setValidForm(true)
+                }
+                
                 
             })
             
@@ -226,6 +268,7 @@ export default function Origem({sender,setSender}){
 
         if(sender.cpf.length === 14){
             setErroCpf([]);
+
            console.log(sender)
             
         }
@@ -233,11 +276,11 @@ export default function Origem({sender,setSender}){
             setErroCpf({cpf:"CPF inválido"})
         }
 
+
+
         if(sender.address.cep.length === 10 && sender.cpf.length === 14){
             navigate("/destino")
         }
-
-    
         
     }
 
@@ -270,6 +313,7 @@ export default function Origem({sender,setSender}){
     }
 
 
+
     function handleSelect(e){
         const selectedValue = e.target.value
         let uf = options.find(item => item.name === selectedValue).abbreviation 
@@ -288,7 +332,7 @@ export default function Origem({sender,setSender}){
     return(
         <div className="container">
         <div className="containerBox">
-            <h3 className="title-container">Dados Origem</h3>
+            <h3 className="title-container">Dados Destino</h3>
             <form onSubmit={submit} className="form"> 
                 <div className="dados_pessoais">
                     <Input type="text" text="Nome Completo" nome="fullname" mask="" max={100} required={true} handleOnChange={handleChange} value={sender.fullname}/>
@@ -305,7 +349,7 @@ export default function Origem({sender,setSender}){
                     <Input type="text" text="Número" nome="number" mask="99999" max={5}  required={true} handleOnChange={handleChangeAdrress} value={sender.address && sender.address.number}/>
                     <Input type="text" text="Complemento" nome="complement" mask="" max={100} required={false} handleOnChange={handleChangeAdrress} value={sender.address && sender.address.complement}/>
                 </div>
-                <SubmitButton text={"Avançar"}/>
+                <SubmitButton validForm={verificaForm()} text={"Avançar"}/>
                
             </form>
         </div>

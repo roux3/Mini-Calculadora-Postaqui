@@ -1,11 +1,12 @@
 //StyledComponents
 import styled from "styled-components"
 
-export default function SubmitButton({text}){
+export default function SubmitButton({text,validForm}){
+
     return(
-        <StyledButton>
+        <StyledButton vazio={validForm}>
         <div>
-            <button>{text}</button>
+            <button disabled={validForm}>{text}</button>
         </div>
         </StyledButton>
 
@@ -23,10 +24,14 @@ const StyledButton = styled.div`
         transition: .3s linear;
         cursor: pointer;
         color: white;
+        background-color: ${(props) => (props.vazio === true ? "var(--button-disabled)" : "var(--button-color)")};
     }
-    button:hover{
-        background-color: var(--button-color-hover);
 
+    button:hover{
+        background-color: ${(props) => (props.vazio === true ? "var(--button-disabled)" : "var(--button-color-hover)")};
     }
+  
+
+
 
 `

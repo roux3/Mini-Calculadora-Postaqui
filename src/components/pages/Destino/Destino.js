@@ -8,7 +8,7 @@ import Select from "../../Form/Select/Selecter";
 //Bibliotecas
 import axios from "axios";
 import SubmitButton from "../../Form/SubmitButton/SubmitButton";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {useNavigate} from "react-router-dom"
 import Steps from "../../Steps/Steps";
 
@@ -18,23 +18,59 @@ export default function Destino({sender, receiver, setReceiver}){
     const [erroCep, setErroCep] = useState([])
     const [erroCpf, setErroCpf] = useState([])
 
+
+    const [validForm, setValidForm] = useState(true)
+    
+
+    useEffect(() => {
+        API_cep(receiver?.address?.cep)
+    },[])
+
+    useEffect(() => {
+        verificaForm();
+
+    },[receiver])
+
+
     const navigate = useNavigate()
 
+    function verificaForm(){         
+
+        if((receiver.fullname && receiver.fullname !== "") 
+        && (receiver.cpf && receiver.cpf !== "" && receiver.cpf.length === 14) 
+        &&  (receiver.phone && receiver.phone !== "") 
+        && (receiver.email && receiver.email !== "")
+        &&(receiver.address && (receiver.address.cep && receiver.address.cep !== "")
+        && (receiver.address.state && receiver.address.state !== "")
+        && (receiver.address.uf && receiver.address.uf !== "")
+        && (receiver.address.city && receiver.address.city !== "")
+        && (receiver.address.neighborhood && receiver.address.neighborhood !== "")
+        && (receiver.address.street && receiver.address.street !== "")
+        && (receiver.address.number && receiver.address.number !== ""))
+         && validForm === false){
+            return false
+        }
+        else{
+            return true
+        }
+    }
+
    function API_cep(cep){
-        cep = cep.replace(/\D/d, '')
-        if(cep.length === 8){
+        //cep = cep.replace(/\D/d, '')
+        if(cep && cep.length === 10){
             setErroCep([]);
-   
-            axios.get(`https://viacep.com.br/ws/${cep}/json/`)
+            axios.get(`https://viacep.com.br/ws/${cep.replace(/[.-]/g, '')}/json/`)
             .then((res) => {
+                setValidForm(false)
                 const data = res.data
                 if(data.cep){
+                    
                     //Atualizo os campos automaticamente caso o cep seja válido e tenha um retorno diferente de undefined
                     setReceiver(receiver => ({
                         ...receiver,
                         address:{
                             ...receiver.address,
-                            "cep": cep.replace(/[.-]/g, ''),
+                            "cep": cep,
                             "state": options.find(item => item.abbreviation === data.uf).name,
                             "uf": data.uf,
                             "city": data.localidade,
@@ -44,6 +80,10 @@ export default function Destino({sender, receiver, setReceiver}){
                     }))
 
                    
+                }
+                else{
+                    setValidForm(true)
+
                 }
                 
             })
@@ -65,7 +105,7 @@ export default function Destino({sender, receiver, setReceiver}){
             ...receiver,
             address:{
                 ...receiver.address,
-                "cep": cep.replace(/\D/d, ''),
+                "cep": cep,
                 "state": "",
                 "uf": "",
                 "city": "",
@@ -219,7 +259,7 @@ export default function Destino({sender, receiver, setReceiver}){
     const submit = (e) => {
         e.preventDefault()
 
-        if(receiver.address.cep.length === 8){
+        if(receiver.address.cep.length === 10){
             setErroCep([]);
         }
         else{
@@ -227,7 +267,7 @@ export default function Destino({sender, receiver, setReceiver}){
             
         }
 
-        if(receiver.cpf.length === 11){
+        if(receiver.cpf.length === 14){
             setErroCpf([]);
            console.log(receiver)
             
@@ -236,7 +276,7 @@ export default function Destino({sender, receiver, setReceiver}){
             setErroCpf({cpf:"CPF inválido"})
         }
 
-        if(receiver.address.cep.length === 8 && receiver.cpf.length === 11){
+        if(receiver.address.cep.length === 10 && receiver.cpf.length === 14){
             navigate("/destino")
         }
 
@@ -247,8 +287,8 @@ export default function Destino({sender, receiver, setReceiver}){
     function handleChange(e){
         let value = e.target.value
         if(e.target.name === "cpf"){
-            value = value.replace(/[.-]/g, '')
-            if(value.length === 11){
+            value = value
+            if(value.length === 14){
                 setErroCpf([]);
             } //salva em receiver sem os pontos e traços
         }
@@ -262,7 +302,7 @@ export default function Destino({sender, receiver, setReceiver}){
             ...receiver,
             address:{
                 ...receiver.address,
-                [e.target.name] : e.target.value.replace(/[-]/g, '')
+                [e.target.name] : e.target.value
             }
         }))
         if(e.target.name === "cep"){
@@ -302,7 +342,7 @@ export default function Destino({sender, receiver, setReceiver}){
                         <Input type="email" text="E-mail" nome="email" required={true} mask="" max={70} handleOnChange={handleChange} value={receiver.email}/>
                     </div>
                     <div className="dados_endereco">
-                        <Input type="text" text="CEP" nome="cep" error={erroCep.cep ? true:false} helper={erroCep.cep && erroCep.cep} required={true} mask="99999-999" max={9} handleOnChange={handleChangeAdrress} value={receiver.address && receiver.address.cep}/>
+                        <Input type="text" text="CEP" nome="cep" error={erroCep.cep ? true:false} helper={erroCep.cep && erroCep.cep} required={true} mask="99.999-999" max={10} handleOnChange={handleChangeAdrress} value={receiver.address && receiver.address.cep}/>
                         <Select text="UF" nome="uf" options={options} handleOnChange={handleSelect} value={receiver.address ? receiver.address.state: ""}/>
                         <Input type="text" text="Cidade" nome="city" mask="" max={50} required={true} handleOnChange={handleChangeAdrress} value={receiver.address && receiver.address.city}/>
                         <Input type="text" text="Bairro" nome="neighborhood" mask="" max={70} required={true} handleOnChange={handleChangeAdrress} value={receiver.address && receiver.address.neighborhood}/>
@@ -311,7 +351,7 @@ export default function Destino({sender, receiver, setReceiver}){
                         <Input type="text" text="Complemento" nome="complement" mask="" max={100} required={false} handleOnChange={handleChangeAdrress} value={receiver.address && receiver.address.complement}/>
                     </div>
                     
-                    <SubmitButton text={"Avançar"}/>
+                    <SubmitButton validForm={verificaForm()} text={"Avançar"}/>
                 
                 </form>
             </div>
