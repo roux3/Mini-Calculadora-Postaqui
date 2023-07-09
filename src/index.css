@@ -74,5 +74,16 @@ html, body, #root{
   
 }
 
+.steps{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0 auto;
+  gap:30px;
+}
 
+.steps img{
+  width: 100px;
+  height: 90px;
+}
 

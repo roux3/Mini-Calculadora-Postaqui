@@ -277,7 +277,7 @@ export default function Destino({sender, receiver, setReceiver}){
         }
 
         if(receiver.address.cep.length === 10 && receiver.cpf.length === 14){
-            navigate("/destino")
+            navigate("/packet")
         }
 
     
@@ -330,10 +330,12 @@ export default function Destino({sender, receiver, setReceiver}){
 
     return(
         <div className="container">
-            <Steps dados={sender} title="Origem"/>
+            <div className="steps">
+                <Steps dados={sender} title="Origem" backColor="#F2994A" path="/"/>
+            </div>
             <div className="containerBox">
                 
-                <h3 className="title-container">Dados Origem</h3>
+                <h3 className="title-container">Dados Destino</h3>
                 <form onSubmit={submit} className="form"> 
                     <div className="dados_pessoais">
                         <Input type="text" text="Nome Completo" nome="fullname" mask="" max={100} required={true} handleOnChange={handleChange} value={receiver.fullname}/>

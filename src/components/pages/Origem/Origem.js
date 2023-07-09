@@ -332,7 +332,7 @@ export default function Origem({sender,setSender}){
     return(
         <div className="container">
         <div className="containerBox">
-            <h3 className="title-container">Dados Destino</h3>
+            <h3 className="title-container">Dados Origem</h3>
             <form onSubmit={submit} className="form"> 
                 <div className="dados_pessoais">
                     <Input type="text" text="Nome Completo" nome="fullname" mask="" max={100} required={true} handleOnChange={handleChange} value={sender.fullname}/>

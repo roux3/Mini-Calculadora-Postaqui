@@ -1,12 +1,31 @@
 //Bibliotecas
 import TextField from '@mui/material/TextField'
 import InputMask from 'react-input-mask'
+import InputAdornment  from '@mui/material/InputAdornment'
 
 
-export default function Input({type, text, nome,handleOnChange,value,required,max,mask,error,helper}){
+export default function Input({type, text, nome,handleOnChange,value,required,max,mask,error,helper,adornment, adornmentPosition}){
     if(value === undefined){
         value = ""
     }
+    let teste = {}
+    if(adornment && adornmentPosition === undefined || adornmentPosition === "end"){
+        teste = {
+            endAdornment: <InputAdornment position='start'>{adornment}</InputAdornment>
+        }
+    }
+    else if(adornment && adornmentPosition === "start"){
+        teste = {
+            startAdornment: <InputAdornment position='start'>{adornment}</InputAdornment>
+        }
+    }
+    
+
+
+
+
+
+
     // console.log(`elemento ${text} val ${value}`)
     return(
         <div className="form_control">
@@ -31,10 +50,17 @@ export default function Input({type, text, nome,handleOnChange,value,required,ma
             onChange={handleOnChange} 
             value={value} 
             variant='outlined'
-            required={required} //converte para booleano, pois ele inverte o valor depois inverte mais uma vez voltando ao estado original
-            inputProps={{maxLength : max,
+            required={required}
+            
+            //converte para booleano, pois ele inverte o valor depois inverte mais uma vez voltando ao estado original
+            InputProps={{
+                ...teste,
+                maxLength : max,
                         style:{backgroundColor:'white',
-                                borderRadius:"5px"}}}
+                                borderRadius:"5px"}
+                        
+                            
+                            }}
 
             >
     

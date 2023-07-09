@@ -5,12 +5,13 @@ import styled from "styled-components"
 //Bibliotecas
  import {Link} from "react-router-dom"
 
-export default function Steps({dados,title}){
+export default function Steps({dados,title,path,backColor}){
+
     console.log(dados)
     return(
-        <StyledStep>
+        <StyledStep backColor={backColor}>
                 
-                <Link className="step-box" to={'/'}>
+                <Link className="step-box" to={path}>
                     
                     <h3>{title}</h3>
                     <div className="dados">
@@ -28,7 +29,7 @@ export default function Steps({dados,title}){
 }
 
 const StyledStep = styled.div`
-    background-color: #F2994A;
+    background-color: ${(props) => props.backColor};
     text-align: center;
     border-radius: 30px;
     width: 300px;
