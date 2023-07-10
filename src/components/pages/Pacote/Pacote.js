@@ -3,10 +3,8 @@ import styled from "styled-components";
 
 //Componentes
 import Input from "../../Form/Input/Input";
-import Select from "../../Form/Select/Selecter";
 
 //Bibliotecas
-import axios from "axios";
 import SubmitButton from "../../Form/SubmitButton/SubmitButton";
 import { useState, useEffect } from "react";
 import {useNavigate} from "react-router-dom"
@@ -23,10 +21,19 @@ import TextArea from "../../Form/Input/TextArea";
 export default function Pacote({sender, receiver, packet, setPacket}){
     
 
-    const [lenText, setLenText] = useState(0)
+
     const [validForm, setValidForm] = useState(true)
 
 
+    useEffect(() => {
+
+        if(packet?.information?.description.length >= 10){
+
+            setValidForm(false)
+        }
+        
+        
+    },[])
 
     useEffect(() => {
         verificaForm();
@@ -37,7 +44,6 @@ export default function Pacote({sender, receiver, packet, setPacket}){
     const navigate = useNavigate()
 
     function verificaForm(){         
-
         if((packet.weight && packet.weight !== "") 
             && (packet.height && packet.height !== "") 
             && (packet.width && packet.width !== "") 
@@ -45,7 +51,7 @@ export default function Pacote({sender, receiver, packet, setPacket}){
             && (packet.information 
                 && (packet.information.amount && packet.information.amount !== "")
                 && (packet.information.quantity && packet.information.quantity !== "")
-                && (packet.information.description && packet.information.description !== "")) ){
+                && (packet.information.description && packet.information.description !== "")) && validForm === false ){
             return false
         }
         else{
@@ -74,7 +80,13 @@ export default function Pacote({sender, receiver, packet, setPacket}){
     function handleChangeInfo(e){
         if(e.target.name === "description"){
             
-            setLenText(e.target.value.length)
+
+            if(e.target.value.length < 10){
+                setValidForm(true)
+            }
+            else{
+                setValidForm(false)
+            }
             if(e.target.value.length >= 1000){
                 return
             }
@@ -87,12 +99,11 @@ export default function Pacote({sender, receiver, packet, setPacket}){
                 [e.target.name] : e.target.value
             }
         }))
-       console.log(e.target.value)
+
  
     }
 
     const handleChangeSwtich = (e) =>{
-        console.log(packet)
         setPacket({...packet, [e.target.name]: e.target.checked})
     }
     
@@ -129,7 +140,7 @@ export default function Pacote({sender, receiver, packet, setPacket}){
                     <div className="embalagem_info">
                         <Input type="text" text="Valor da mercadoria" nome="amount" max={10} mask="99999" required={true} adornmentPosition="start" adornment="R$" value={packet.information && packet.information.amount} handleOnChange={handleChangeInfo}/>
                         <Input type="text" text="Quantidade de itens" nome="quantity" required={true} max={10} mask="99999" value={packet.information && packet.information.quantity} handleOnChange={handleChangeInfo}/>
-                        <TextArea text="Descrição dos itens" nome="description" max={1000} helpers={`Limite de letras ${lenText}/1000`} value={packet.information && packet.information.description} handleOnChange={handleChangeInfo}/>
+                        <TextArea text="Descrição dos itens" nome="description" max={1000} helpers={`Limite de letras ${(packet.information && packet.information.description) ? packet.information.description.length: 0}/1000`} value={packet.information && packet.information.description} handleOnChange={handleChangeInfo}/>
                     </div>
                 
                 </div>   

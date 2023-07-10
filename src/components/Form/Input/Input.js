@@ -9,7 +9,7 @@ export default function Input({type, text, nome,handleOnChange,value,required,ma
         value = ""
     }
     let teste = {}
-    if(adornment && adornmentPosition === undefined || adornmentPosition === "end"){
+    if((adornment) && adornmentPosition === undefined || (adornmentPosition === "end")){
         teste = {
             endAdornment: <InputAdornment position='start'>{adornment}</InputAdornment>
         }
@@ -26,7 +26,6 @@ export default function Input({type, text, nome,handleOnChange,value,required,ma
 
 
 
-    // console.log(`elemento ${text} val ${value}`)
     return(
         <div className="form_control">
         

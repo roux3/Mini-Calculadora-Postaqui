@@ -7,7 +7,8 @@ import Origem from './components/pages/Origem/Origem';
 import Header from "./components/layout/Header/Header";
 import Destino from "./components/pages/Destino/Destino";
 import Pacote from "./components/pages/Pacote/Pacote";
-
+import Final from "./components/pages/Final/Final";
+import Rastreio from "./components/pages/Rastreio/Rastreio";
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
   const [packet, setPacket] = useState({"reverse": false,
                                           "ar": true,
                                           "own_hands": false})
+  const [mais_barato, setMais_bartao] = useState([])
 
 
   return (
@@ -29,7 +31,9 @@ function App() {
                 <Route exact path='/' element={<Origem sender={sender} setSender={setSender}/>}/>
                 <Route exact path='/destino' element={<Destino sender={sender} receiver={receiver} setReceiver={setReceiver}/>}/>
                 <Route exact path='/packet' element={<Pacote sender={sender} receiver={receiver} packet={packet} setPacket={setPacket}/>}/>
-                {/* <Route exact path='/final' element={<Final sender={sender} receiver={receiver} packet={packet}/>}/> */}
+                <Route exact path='/final' element={<Final sender={sender} receiver={receiver} packet={packet} mais_barato={mais_barato} setMais_bartao={setMais_bartao}/>}/>
+                <Route exact path='/rastreio' element={<Rastreio mais_barato={mais_barato} setSender={setSender} setReceiver={setReceiver} setPacket={setPacket} setMais_bartao={setMais_bartao}/>}/>
+
             </Routes>
           
         </Router>

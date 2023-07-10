@@ -24,7 +24,6 @@ export default function Origem({sender,setSender}){
     },[])
 
     useEffect(() => {
-        console.log(sender)
         verificaForm();
 
     },[sender])
@@ -48,7 +47,6 @@ export default function Origem({sender,setSender}){
             return false
         }
         else{
-            console.log("negativo")
             return true
         }
     }
@@ -269,7 +267,6 @@ export default function Origem({sender,setSender}){
         if(sender.cpf.length === 14){
             setErroCpf([]);
 
-           console.log(sender)
             
         }
         else{

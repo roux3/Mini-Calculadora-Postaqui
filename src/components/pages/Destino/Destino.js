@@ -269,7 +269,7 @@ export default function Destino({sender, receiver, setReceiver}){
 
         if(receiver.cpf.length === 14){
             setErroCpf([]);
-           console.log(receiver)
+
             
         }
         else{

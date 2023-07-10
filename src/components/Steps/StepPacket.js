@@ -5,7 +5,8 @@ import styled from "styled-components"
 //Bibliotecas
  import {Link} from "react-router-dom"
 
-export default function Steps({dados,title,path,backColor}){
+export default function StepPacket({dados,title,path,backColor}){
+
 
     return(
         <StyledStep backColor={backColor}>
@@ -14,9 +15,11 @@ export default function Steps({dados,title,path,backColor}){
                     
                     <h3>{title}</h3>
                     <div className="dados">
-                        <p>{dados.fullname} - {dados.cpf}</p> 
-                        <p> {dados.address.cep} - {dados.address.state} - {dados.address.uf}-   {dados.address.city}</p>
-                        <p>{dados.address.street}, {dados.address.neighborhood} - {dados.address.number} {dados.address.complement && dados.address.complement}</p>
+                        <p><span>AxLxC:</span> {dados.height}x{dados.width}x{dados.width}</p> 
+                        <p><span>Logística Reversa:</span> {dados.reverse ? "Sim":"Não"}</p>
+                        <p><span>Mãos próprias:</span> {dados.own_hands ? "Sim":"Não"}</p>
+                        <p><span>Aviso de recebimento:</span> {dados.ar ? "Sim":"Não"}</p>
+                        <p><span>Valor Mercadoria:</span> R${dados.amount}</p>
                         
                     </div>
                 </Link>
@@ -45,6 +48,10 @@ const StyledStep = styled.div`
         margin: .5em;
         display:grid;
         grid-row-gap: .5em;
+    }
+
+    .dados span{
+        text-style: bold;
     }
 
 `
